@@ -1,0 +1,35 @@
+name: test ccache
+
+on:
+  push:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: ${{ matrix.os }}-${{ matrix.build-type }}
+    runs-on:
+      labels: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        build-type: [Debug, Release]
+        os: [ubuntu-20.04, windows-latest]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Ccache for gh actions
+      uses: hendrikmuhs/ccache-action@v1.2
+      with:
+        key: ${{ matrix.os }}-${{ matrix.build-type }}
+
+    - name: Build
+      uses: lukka/run-cmake@v3
+      with:
+        cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
+        cmakeListsTxtPath: '${{ github.workspace }}/CMakeLists.txt'
+        buildDirectory: '${{ github.workspace }}/build'
+        cmakeBuildType: '${{ matrix.build-type }}'
+        cmakeAppendedArgs: '-D CMAKE_C_COMPILER_LAUNCHER=ccache -D CMAKE_CXX_COMPILER_LAUNCHER=ccache'
