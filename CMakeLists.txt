@@ -4,7 +4,7 @@ project(TEST)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
-option(GENERATE_DEBUG_INFO "Generate debug info files" OFF)
+option(GENERATE_DEBUG_INFO "Generate debug info files" ON)
 
 
 message("CMAKE_CXX_COMPILER_LAUNCHER: ${CMAKE_CXX_COMPILER_LAUNCHER}")
